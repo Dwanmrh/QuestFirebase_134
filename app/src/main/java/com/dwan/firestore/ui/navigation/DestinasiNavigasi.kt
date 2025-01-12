@@ -9,3 +9,8 @@ object DestinasiHome: DestinasiNavigasi {
     override val route: String = "home" // Rute untuk halaman home
     override val titleRes: String = "Home" // Judul untuk halaman home
 }
+
+object DestinasiInsert: DestinasiNavigasi {
+    override val route: String = "insert"
+    override val titleRes: String = "Insert"
+}
