@@ -21,6 +21,14 @@ class InsertViewModel(
         )
     }
 }
+// Sealed class untuk menentukan status/keadaan form
+sealed class FormState {
+    object Idle : FormState() // Status awal (form belum disubmit)
+    object Loading : FormState() // Status loading (sedang memproses)
+    data class Success(val message: String) : FormState()
+    data class Error(val message: String) : FormState()
+}
+
 // Data class untuk menyimpan state keseluruhan form input mahasiswa
 data class InsertUiState(
     val insertUiEvent: MahasiswaEvent = MahasiswaEvent(),  // Menyimpan data input form saat ini
