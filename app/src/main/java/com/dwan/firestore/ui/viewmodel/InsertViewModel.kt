@@ -1,8 +1,13 @@
 package com.dwan.firestore.ui.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dwan.firestore.model.Mahasiswa
 import com.dwan.firestore.repository.RepositoryMhs
+import kotlinx.coroutines.launch
 
 class InsertViewModel(
     private val mhs: RepositoryMhs
@@ -37,8 +42,34 @@ class InsertViewModel(
         uiEvent = uiEvent.copy(isEntryValid = errorState) // Update status validasi pada UI event
         return errorState.isValid() // Mengembalikan hasil validasi
     }
+    // Fungsi untuk menyimpan data mahasiswa ke database
+    fun insertMhs() {
+        if (validateFields()) {
+            viewModelScope.launch {
+                uiState = FormState.Loading // Set state loading untuk menunjukkan proses sedang berlangsung
+                try {
+                    // Mengkonversi data UI ke model database dan menyimpannya
+                    mhs.insertMhs(uiEvent.insertUiEvent.toMhsModel())
+                    uiState = FormState.Success("Data berhasil disimpan")
+                } catch (e: Exception) {
+                    uiState = FormState.Error("Data gagal disimpan")
+                }
+            }
+        } else {
+            uiState = FormState.Error("Data tidak valid")
+        }
+    }
+    // Fungsi untuk mereset form ke kondisi awal
+    fun resetForm() {
+        uiEvent = InsertUiState() // Reset UI event ke nilai default
+        uiState = FormState.Idle // Reset state form ke kondisi idle
+    }
 
+    fun resetSnackBarMessage() {
+        uiState = FormState.Idle
+    }
 }
+
 // Sealed class untuk menentukan status/keadaan form
 sealed class FormState {
     object Idle : FormState() // Status awal (form belum disubmit)
