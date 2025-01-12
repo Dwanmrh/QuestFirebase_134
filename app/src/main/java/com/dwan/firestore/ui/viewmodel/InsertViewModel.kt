@@ -20,6 +20,24 @@ class InsertViewModel(
             insertUiEvent = mahasiswaEvent,
         )
     }
+
+    // Validasi data input pengguna
+    fun validateFields(): Boolean {
+        val event = uiEvent.insertUiEvent // Mengambil data event dari UI
+
+        // Membuat object FormErrorState yang berisi pesan error untuk setiap field
+        val errorState = FormErrorState(
+            nim = if (event.nim.isNotEmpty()) null else "NIM tidak boleh kosong",
+            nama = if (event.nama.isNotEmpty()) null else "Nama tidak boleh kosong",
+            jenisKelamin = if (event.jenisKelamin.isNotEmpty()) null else "Jenis Kelamin tidak boleh kosong",
+            alamat = if (event.alamat.isNotEmpty()) null else "Alamat tidak boleh kosong",
+            kelas = if (event.kelas.isNotEmpty()) null else "Kelas tidak boleh kosong",
+            angkatan = if (event.angkatan.isNotEmpty()) null else "Angkatan tidak boleh kosong"
+        )
+        uiEvent = uiEvent.copy(isEntryValid = errorState) // Update status validasi pada UI event
+        return errorState.isValid() // Mengembalikan hasil validasi
+    }
+
 }
 // Sealed class untuk menentukan status/keadaan form
 sealed class FormState {
