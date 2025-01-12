@@ -21,6 +21,11 @@ class InsertViewModel(
         )
     }
 }
+// Data class untuk menyimpan state keseluruhan form input mahasiswa
+data class InsertUiState(
+    val insertUiEvent: MahasiswaEvent = MahasiswaEvent(),  // Menyimpan data input form saat ini
+    val isEntryValid: FormErrorState = FormErrorState(),  // Menyimpan status validasi form (error atau valid)
+)
 
 // Data class untuk menyimpan pesan error pada setiap field form
 data class FormErrorState(
