@@ -32,7 +32,7 @@ class NetworkRepository( // Ketiga dibuat
                         it.toObject(Mahasiswa::class.java)!!
                     }
                     // Fungsi untuk mengirim collection ke data class
-                    trySend(mhsList)
+                    trySend(mhsList) // try send memberikan fungsi untuk mengirim data ke flow
                 }
             }
         awaitClose {
@@ -41,8 +41,21 @@ class NetworkRepository( // Ketiga dibuat
         }
     }
 
-    override fun getMhs(nim: String): Flow<Mahasiswa> {
-        TODO("Not yet implemented")
+    override fun getMhs(nim: String): Flow<Mahasiswa> = callbackFlow {
+        // Membuat listener untuk memantau dokumen mahasiswa di Firestore
+        val mhsDocument = firestore.collection("Mahasiswa")
+            .document(nim)
+            .addSnapshotListener { value, error ->
+                if (value != null) {
+                    // Mengkonversi data Firestore ke objek Mahasiswa
+                    val mhs = value.toObject(Mahasiswa::class.java)!!
+                    trySend(mhs)
+                }
+            }
+
+        awaitClose {
+            mhsDocument.remove()
+        }
     }
 
     override suspend fun deleteMhs(mahasiswa: Mahasiswa) {
