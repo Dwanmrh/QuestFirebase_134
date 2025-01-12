@@ -22,6 +22,22 @@ class InsertViewModel(
     }
 }
 
+// Data class untuk menyimpan pesan error pada setiap field form
+data class FormErrorState(
+    val nim: String? = null, // Pesan error untuk field NIM
+    val nama: String? = null,
+    val jenisKelamin: String? = null,
+    val alamat: String? = null,
+    val kelas: String? = null,
+    val angkatan: String? = null
+) {
+    // Fungsi untuk mengecek apakah form valid (tidak ada error)
+    fun isValid(): Boolean {
+        return nim == null && nama == null && jenisKelamin == null &&
+                alamat == null && kelas == null && angkatan == null
+    }
+}
+
 // Data class Variabel yang menyimpan data input form
 data class MahasiswaEvent(
     val nim: String = "",
