@@ -40,7 +40,17 @@ class HomeViewModel( // ke-9 dibuat
                 }
             }
         }
+
+    fun deleteMhs(mahasiswa: Mahasiswa) {
+        viewModelScope.launch {
+            try {
+                mhs.deleteMhs(mahasiswa)
+            } catch (e:Exception) {
+                mhsUIState = HomeUiState.Error(e)
+            }
+        }
     }
+}
 
 
 sealed class HomeUiState{ // Kedelapan dibuat, 6&7 di manifest
