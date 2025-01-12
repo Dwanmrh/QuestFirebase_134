@@ -1,6 +1,7 @@
 package com.dwan.firestore.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.dwan.firestore.model.Mahasiswa
 import com.dwan.firestore.repository.RepositoryMhs
 
 class InsertViewModel(
@@ -20,3 +21,13 @@ class InsertViewModel(
         )
     }
 }
+
+// Menyimpan input form ke dalam entity
+fun MahasiswaEvent.toMhsModel(): Mahasiswa = Mahasiswa(
+    nim = nim,
+    nama = nama,
+    gender = jenisKelamin,
+    alamat = alamat,
+    kelas = kelas,
+    angkatan = angkatan
+)
